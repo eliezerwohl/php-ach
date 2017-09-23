@@ -6,17 +6,14 @@ $APIKey = '2F822Rw39fx762MaV7Yy86jXGTC7sCDy';
 // If there is no POST data or a token-id, print the initial shopping cart form to get ready for Step One.
 if (empty($_POST['DO_STEP_1']) && empty($_GET['token-id'])) {
 
-    print '  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
     print '
-    <html>
-      <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>Collect non-sensitive Customer Info </title>
-      </head>
-      <body>
       <style>
             .error  {
                 border:1px solid red;
+            }
+            .warningDiv {
+                display:none;
+                color:red;
             }
       </style>
       <p><h2>Please enter all information below.<br /></h2></p>
@@ -26,7 +23,7 @@ if (empty($_POST['DO_STEP_1']) && empty($_GET['token-id'])) {
           <div class="innerSumbmit">
           <div class="formContainer"><span class="describeContainer">First Name</span><input type="text" name="billing-address-first-name" value="John"></div>
           <div class="formContainer"><span class="describeContainer">Last Name</span><input type="text" name="billing-address-last-name" value="Smith"></div>
-          <div class="formContainer"><span class="describeContainer">Address </span><input type="text" name="billing-address-address1" value="1234 Main St."></div>
+          <div class="formContainer"><span class="describeContainer">Address 1</span><input type="text" name="billing-address-address1" value="1234 Main St."></div>
           <div class="formContainer"><span class="describeContainer">Address 2 </span><textarea rows="1" type="text" name="billing-address-address2" value="Suite 205"></textarea></div>
           <div class="formContainer"><span class="describeContainer">City </span><input type="text" name="billing-address-city" value="Beverly Hills"></div>
           <div class="formContainer"><span class="describeContainer">State/Province </span><input type="text" name="billing-address-state" value="CA"></div>
@@ -41,6 +38,10 @@ if (empty($_POST['DO_STEP_1']) && empty($_GET['token-id'])) {
            
             <div>
           <input type="submit" value="Submit Step One"><input type="hidden" name ="DO_STEP_1" value="true"></div>
+     
+          <div class="warningDiv">
+          Please fill in all fields
+          </div>
 
         </form>
         </div>
@@ -54,6 +55,7 @@ if (empty($_POST['DO_STEP_1']) && empty($_GET['token-id'])) {
             for (i=0; i < allInputs.length ; i++) { 
                 debugger
                 if(allInputs[i].value == ""){
+                     document.getElementsByClassName("warningDiv")[0].style.display = "block";
                     
                     allInputs[i].parentNode.classList.add("error");
                     submit = false;
@@ -65,9 +67,6 @@ if (empty($_POST['DO_STEP_1']) && empty($_GET['token-id'])) {
 }
 
         </script>
-
-      </body>
-    </html>
 
     ';
 }else if (!empty($_POST['DO_STEP_1'])) {
@@ -105,8 +104,6 @@ if (empty($_POST['DO_STEP_1']) && empty($_GET['token-id'])) {
     appendXmlNode($xmlRequest, $xmlBillingAddress,'address2', $_POST['billing-address-address2']);
     $xmlSale->appendChild($xmlBillingAddress);
 
-   
-
 
     $xmlRequest->appendChild($xmlSale);
 
@@ -125,23 +122,19 @@ if (empty($_POST['DO_STEP_1']) && empty($_GET['token-id'])) {
 
     // Initiate Step Two: Create an HTML form that collects the customer's sensitive payment information
     // and use the form-url that the Payment Gateway returns as the submit action in that form.
-    print '  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
 
 
-    print '
 
-        <html>
-        <head>
-            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-            <title>Collect sensitive Customer Info </title>
-        </head>
-        <body>';
     // Uncomment the line below if you would like to print Step One's response
     // print '<pre>' . (htmlentities($data)) . '</pre>';
     print '
           <style>
             .error  {
                 border:1px solid red;
+            }
+            .warningDiv {
+                color:red;
+                display:none;
             }
       </style>
         <p><h2>Step Two: Collect sensitive payment information and POST directly to payment gateway<br /></h2></p>
@@ -169,7 +162,10 @@ if (empty($_POST['DO_STEP_1']) && empty($_GET['token-id'])) {
 
               
                 <div><INPUT type ="submit" value="Submit Step Two"></div>
-            </table>
+                      <div class="warningDiv ">
+          Please fill in all fields
+          </div>
+         
             </div>
         </form>
         </div>
@@ -183,7 +179,7 @@ if (empty($_POST['DO_STEP_1']) && empty($_GET['token-id'])) {
             for (i=0; i < allInputs.length ; i++) { 
                 debugger
                 if(allInputs[i].value == ""){
-
+                    document.getElementsByClassName("warningDiv")[0].style.display = "block";
                     
                     allInputs[i].parentNode.classList.add("error");
                     submit = false;
@@ -196,8 +192,6 @@ if (empty($_POST['DO_STEP_1']) && empty($_GET['token-id'])) {
 
         </script>
 
-        </body>
-        </html>
         ';
 
 } elseif (!empty($_GET['token-id'])) {
@@ -219,14 +213,7 @@ if (empty($_POST['DO_STEP_1']) && empty($_GET['token-id'])) {
 
 
     $gwResponse = @new SimpleXMLElement((string)$data);
-    print '  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
-    print '
-    <html>
-      <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>Step Three - Complete Transaction</title>
-      </head>
-      <body>';
+
 
     if ((string)$gwResponse->result == 1 ) {
         print "<p><h3> Transaction was Approved</h3></p>\n";
@@ -266,7 +253,6 @@ if (empty($_POST['DO_STEP_1']) && empty($_GET['token-id'])) {
         print " <p><h3>XML response was:</h3></p>\n";
         print '<pre>' . (htmlentities($data)) . '</pre>';
     }
-    print "</body></html>";
 
 
 
