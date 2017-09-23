@@ -14,33 +14,58 @@ if (empty($_POST['DO_STEP_1']) && empty($_GET['token-id'])) {
         <title>Collect non-sensitive Customer Info </title>
       </head>
       <body>
-      <p><h2>Step One: Collect non-sensitive payment information.<br /></h2></p>
-
-      <h3> Customer Information</h3>
+      <style>
+            .error  {
+                border:1px solid red;
+            }
+      </style>
+      <p><h2>Please enter all information below.<br /></h2></p>
       <h4> Billing Details</h4>
+      <div class="outerSubmit">
+        <form id="myForm" action="" method="post" onsubmit="event.preventDefault(); validateMyForm();">
+          <div class="innerSumbmit">
+          <div class="formContainer"><span class="describeContainer">First Name</span><input type="text" name="billing-address-first-name" value="John"></div>
+          <div class="formContainer"><span class="describeContainer">Last Name</span><input type="text" name="billing-address-last-name" value="Smith"></div>
+          <div class="formContainer"><span class="describeContainer">Address </span><input type="text" name="billing-address-address1" value="1234 Main St."></div>
+          <div class="formContainer"><span class="describeContainer">Address 2 </span><textarea rows="1" type="text" name="billing-address-address2" value="Suite 205"></textarea></div>
+          <div class="formContainer"><span class="describeContainer">City </span><input type="text" name="billing-address-city" value="Beverly Hills"></div>
+          <div class="formContainer"><span class="describeContainer">State/Province </span><input type="text" name="billing-address-state" value="CA"></div>
+          <div class="formContainer"><span class="describeContainer">Zip/Postal </span><input type="text" name="billing-address-zip" value="90210"></div>
+          <div class="formContainer"><span class="describeContainer">Country </span><input type="text" name="billing-address-country" value="US"></div>
+          <div class="formContainer"><span class="describeContainer">Phone Number </span><input type="text" name="billing-address-phone" value="555-555-5555"></div>
 
-        <form action="" method="post">
-          <table>
-          <tr><td>First Name </td><td><input type="text" name="billing-address-first-name" value="John"></td></tr>
-          <tr><td>Last Name </td><td><input type="text" name="billing-address-last-name" value="Smith"></td></tr>
-          <tr><td>Address </td><td><input type="text" name="billing-address-address1" value="1234 Main St."></td></tr>
-          <tr><td>Address 2 </td><td><input type="text" name="billing-address-address2" value="Suite 205"></td></tr>
-          <tr><td>City </td><td><input type="text" name="billing-address-city" value="Beverly Hills"></td></tr>
-          <tr><td>State/Province </td><td><input type="text" name="billing-address-state" value="CA"></td></tr>
-          <tr><td>Zip/Postal </td><td><input type="text" name="billing-address-zip" value="90210"></td></tr>
-          <tr><td>Country </td><td><input type="text" name="billing-address-country" value="US"></td></tr>
-          <tr><td>Phone Number </td><td><input type="text" name="billing-address-phone" value="555-555-5555"></td></tr>
-
-          <tr><td>Email Address </td><td><input type="text" name="billing-address-email" value="test@example.com"></td></tr>
+          <div class="formContainer"><span class="describeContainer">Email Address </span><input type="text" name="billing-address-email" value="test@example.com"></div>
          
-          <tr><td>Invoice #</td><td><input type="text" name="customer-id" value="12345"></td></tr>
-          <tr><td>Payment Amount</td><td><input type="text"  value="23" name="payment-amount" value=""></td></tr>
-           <tr><td colspan="2"> </td>
-       
-          <tr><td colspan="2" align=center><input type="submit" value="Submit Step One"><input type="hidden" name ="DO_STEP_1" value="true"></td></tr>
-          </table>
+          <div class="formContainer"><span class="describeContainer">Invoice #</span><input type="text" name="customer-id" value="12345"></div>
+          <div class="formContainer"><span class="describeContainer">Payment Amount</span><input type="text"  value="23" name="payment-amount" value=""></div>
+           
+            <div>
+          <input type="submit" value="Submit Step One"><input type="hidden" name ="DO_STEP_1" value="true"></div>
 
         </form>
+        </div>
+        <script>
+        function validateMyForm() {
+          var outer = Array.from(document.getElementsByClassName("outerSubmit"));
+          var submit = true;
+            var inputs = Array.from(outer[0].getElementsByTagName("input"));
+            var selects= Array.from(outer[0].getElementsByTagName("select"));
+            var allInputs = inputs.concat(selects);
+            for (i=0; i < allInputs.length ; i++) { 
+                debugger
+                if(allInputs[i].value == ""){
+                    
+                    allInputs[i].parentNode.classList.add("error");
+                    submit = false;
+                }
+            }
+                if (submit == true){
+    document.getElementById("myForm").submit();
+}
+}
+
+        </script>
+
       </body>
     </html>
 
@@ -114,31 +139,63 @@ if (empty($_POST['DO_STEP_1']) && empty($_GET['token-id'])) {
     // Uncomment the line below if you would like to print Step One's response
     // print '<pre>' . (htmlentities($data)) . '</pre>';
     print '
+          <style>
+            .error  {
+                border:1px solid red;
+            }
+      </style>
         <p><h2>Step Two: Collect sensitive payment information and POST directly to payment gateway<br /></h2></p>
-
-        <form action="'.$formURL. '" method="POST">
+<div class="outerSubmit">
+        <form id="myForm" action="'.$formURL. '" method="POST" onsubmit="event.preventDefault(); validateMyForm();">
+        <div class="innerSumbmit">
         <h3> Payment Information</h3>
-            <table>
 
-                <tr><td>Billing Account Name</td><td><INPUT  value"gene eric" type ="text" name="billing-account-name" value=""> </td></tr>
-                <tr><td>billing-account-number</td><td><INPUT type ="text" name="billing-account-number" value="  123123123"> </td></tr>
-                <tr><td>billing-routing-number</td><td><INPUT type ="text" name="billing-routing-number" value="  123123123"> </td></tr>
-                <tr><td>billing-routing-number</td><td>
+                <div class="formContainer"><span class="describeContainer">Billing Account Name</span><INPUT  value"gene eric" type ="text" name="billing-account-name" value=""> </div>
+                <div class="formContainer"><span class="describeContainer">billing-account-number</span><INPUT type ="text" name="billing-account-number" value="  123123123"> </div>
+                <div class="formContainer"><span class="describeContainer">billing-routing-number</span><INPUT type ="text" name="billing-routing-number" value="  123123123"> </div>
+                <div class="formContainer"><span class="describeContainer">billing-routing-number</span>
                 <select name="billing-account-type">
+                <option disabled selected value> -- select an option -- </option>
                 <option>checking</option>
                 <option>savings</option>
-                </select>
+                </select></div>
 
-                <tr><td>billing-routing-number</td><td>
+                <div class="formContainer"><span class="describeContainer">billing-routing-number</span>
                 <select name="billing-entity-type">
+                <option disabled selected value> -- select an option -- </option>
                 <option>personal</option>
                 <option>business</option>
-                </select>
+                </select></div>
 
               
-                <tr><Td colspan="2" align=center><INPUT type ="submit" value="Submit Step Two"></td> </tr>
+                <div><INPUT type ="submit" value="Submit Step Two"></div>
             </table>
+            </div>
         </form>
+        </div>
+         <script>
+         function validateMyForm() {
+          var outer = Array.from(document.getElementsByClassName("outerSubmit"));
+          var submit = true;
+            var inputs = Array.from(outer[0].getElementsByTagName("input"));
+            var selects= Array.from(outer[0].getElementsByTagName("select"));
+            var allInputs = inputs.concat(selects);
+            for (i=0; i < allInputs.length ; i++) { 
+                debugger
+                if(allInputs[i].value == ""){
+
+                    
+                    allInputs[i].parentNode.classList.add("error");
+                    submit = false;
+                }
+            }
+                if (submit == true){
+    document.getElementById("myForm").submit();
+}
+}
+
+        </script>
+
         </body>
         </html>
         ';
@@ -173,28 +230,29 @@ if (empty($_POST['DO_STEP_1']) && empty($_GET['token-id'])) {
 
     if ((string)$gwResponse->result == 1 ) {
         print "<p><h3> Transaction was Approved</h3></p>\n";
-        print"<a href='#'>please click here to go back to the main page</a>";
+        print "<p><a href=#><button onclick='window.print()'>Print</button></p>";
+        print"<a href='http://www.assistinghands.com/22/newjersey/livingston/'>please click here to go back to the main page</a>";
         print"<h4>Summary: </h4>";
         print '<div><ul>';
-        print "<li>customer id: " . ((string) $gwResponse->{'customer-id'}[0]) . "</li>";
-        print "<li>Customer transaction ID: " . ((string) $gwResponse->{'transaction-id'}[0]) . "</li>";
+        print "<li>Invoice #: " . ((string) $gwResponse->{'customer-id'}[0]) . "</li>";
+        print "<li>Transaction ID: " . ((string) $gwResponse->{'transaction-id'}[0]) . "</li>";
         print "<li>Amount: " . ((string) $gwResponse->{'amount'}[0]) . "</li>";
         print '</ul></div>';
         print '<p>Billing Info</p><div><ul>';
-        print "<li>customer id: " . ((string) $gwResponse->billing->{'first-name'}[0]) . "</li>";
-        print "<li>Customer transaction ID: " . ((string) $gwResponse->billing->{'last-name'}[0]) . "</li>";
-        print "<li>Amount: " . ((string) $gwResponse->billing->{'address1'}[0]) . "</li>";
-        print "<li>Amount: " . ((string) $gwResponse->billing->{'address2'}[0]) . "</li>";
-        print "<li>Amount: " . ((string) $gwResponse->billing->{'city'}[0]) . "</li>";
-        print "<li>Amount: " . ((string) $gwResponse->billing->{'state'}[0]) . "</li>";
-        print "<li>Amount: " . ((string) $gwResponse->billing->{'postal'}[0]) . "</li>";
-        print "<li>Amount: " . ((string) $gwResponse->billing->{'country'}[0]) . "</li>";
-        print "<li>Amount: " . ((string) $gwResponse->billing->{'phone'}[0]) . "</li>";
-        print "<li>Amount: " . ((string) $gwResponse->billing->{'email'}[0]) . "</li>";
-        print "<li>Amount: " . ((string) $gwResponse->billing->{'account-number'}[0]) . "</li>";
-        print "<li>Amount: " . ((string) $gwResponse->billing->{'routing-number'}[0]) . "</li>";
-        print "<li>Amount: " . ((string) $gwResponse->billing->{'account-type'}[0]) . "</li>";
-        print "<li>Amount: " . ((string) $gwResponse->billing->{'entity-type'}[0]) . "</li>";
+        print "<li>First Name: " . ((string) $gwResponse->billing->{'first-name'}[0]) . "</li>";
+        print "<li>Last Name: " . ((string) $gwResponse->billing->{'last-name'}[0]) . "</li>";
+        print "<li>Address 1: " . ((string) $gwResponse->billing->{'address1'}[0]) . "</li>";
+        print "<li>Address 2: " . ((string) $gwResponse->billing->{'address2'}[0]) . "</li>";
+        print "<li>City: " . ((string) $gwResponse->billing->{'city'}[0]) . "</li>";
+        print "<li>State: " . ((string) $gwResponse->billing->{'state'}[0]) . "</li>";
+        print "<li>Postal: " . ((string) $gwResponse->billing->{'postal'}[0]) . "</li>";
+        print "<li>Country: " . ((string) $gwResponse->billing->{'country'}[0]) . "</li>";
+        print "<li>Phone: " . ((string) $gwResponse->billing->{'phone'}[0]) . "</li>";
+        print "<li>Email: " . ((string) $gwResponse->billing->{'email'}[0]) . "</li>";
+        print "<li>Account Number: " . ((string) $gwResponse->billing->{'account-number'}[0]) . "</li>";
+        print "<li>Routing Number: " . ((string) $gwResponse->billing->{'routing-number'}[0]) . "</li>";
+        print "<li>Account Type: " . ((string) $gwResponse->billing->{'account-type'}[0]) . "</li>";
+        print "<li>Entity Type: " . ((string) $gwResponse->billing->{'entity-type'}[0]) . "</li>";
         print '</ul></div>';
 
     } elseif((string)$gwResponse->result == 2)  {
