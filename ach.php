@@ -11,6 +11,10 @@ if (empty($_POST['DO_STEP_1']) && empty($_GET['token-id'])) {
             .error  {
                 border:1px solid red;
             }
+            .warningDiv {
+                display:none;
+                color:red;
+            }
       </style>
       <p><h2>Please enter all information below.<br /></h2></p>
       <h4> Billing Details</h4>
@@ -34,6 +38,10 @@ if (empty($_POST['DO_STEP_1']) && empty($_GET['token-id'])) {
            
             <div>
           <input type="submit" value="Submit Step One"><input type="hidden" name ="DO_STEP_1" value="true"></div>
+     
+          <div class="warningDiv">
+          Please fill in all fields
+          </div>
 
         </form>
         </div>
@@ -47,6 +55,7 @@ if (empty($_POST['DO_STEP_1']) && empty($_GET['token-id'])) {
             for (i=0; i < allInputs.length ; i++) { 
                 debugger
                 if(allInputs[i].value == ""){
+                     document.getElementsByClassName("warningDiv")[0].style.display = "block";
                     
                     allInputs[i].parentNode.classList.add("error");
                     submit = false;
@@ -95,8 +104,6 @@ if (empty($_POST['DO_STEP_1']) && empty($_GET['token-id'])) {
     appendXmlNode($xmlRequest, $xmlBillingAddress,'address2', $_POST['billing-address-address2']);
     $xmlSale->appendChild($xmlBillingAddress);
 
-   
-
 
     $xmlRequest->appendChild($xmlSale);
 
@@ -125,6 +132,10 @@ if (empty($_POST['DO_STEP_1']) && empty($_GET['token-id'])) {
             .error  {
                 border:1px solid red;
             }
+            .warningDiv {
+                color:red;
+                display:none;
+            }
       </style>
         <p><h2>Step Two: Collect sensitive payment information and POST directly to payment gateway<br /></h2></p>
 <div class="outerSubmit">
@@ -151,6 +162,9 @@ if (empty($_POST['DO_STEP_1']) && empty($_GET['token-id'])) {
 
               
                 <div><INPUT type ="submit" value="Submit Step Two"></div>
+                      <div class="warningDiv ">
+          Please fill in all fields
+          </div>
          
             </div>
         </form>
@@ -165,7 +179,7 @@ if (empty($_POST['DO_STEP_1']) && empty($_GET['token-id'])) {
             for (i=0; i < allInputs.length ; i++) { 
                 debugger
                 if(allInputs[i].value == ""){
-
+                    document.getElementsByClassName("warningDiv")[0].style.display = "block";
                     
                     allInputs[i].parentNode.classList.add("error");
                     submit = false;
